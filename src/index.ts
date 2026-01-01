@@ -9,7 +9,7 @@ let router = new RouterContext()
 FactoryRouter.addRouter('/products', productRouter)
 
 let server = http.createServer(async (request, response) => {
-  response.writeHead(200, {'Content-Type': 'application/json'})
+  // response.writeHead(200, {'Content-Type': 'application/json'})
 
   let route = `${request.method}:${request.url}`
   let selectedRouter = FactoryRouter.getRouter(route)
@@ -19,7 +19,7 @@ let server = http.createServer(async (request, response) => {
     await router.execute(route, { request, response })
   }
 
-  response.end()
+  // response.end()
 })
 
 const PORT = 3000
