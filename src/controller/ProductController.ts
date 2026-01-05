@@ -2,9 +2,11 @@ import { IncomingMessage, ServerResponse } from "http";
 import { Params } from "../utils/Type";
 import ProductService from "../service/ProductService";
 import { ProductData, HttpStatus } from "../utils/Type";
+import Validator, { SchemaValidation, schemaProduct } from "../utils/Validator";
 
 class ProductController {
   private service = new ProductService()
+  private validator = new Validator<ProductData>()
 
   async getProducts(request: IncomingMessage, response: ServerResponse, params:Params = {}) {
     
@@ -35,8 +37,10 @@ class ProductController {
   
   async addProduct(request: IncomingMessage, response: ServerResponse, params:Params = {}) {
     try {
-      let body = params.body
-      let result: ProductData | void = await this.service.addProduct(body as Record<string, unknown>)
+      const { id, ...schemaWithoutId } = schemaProduct
+      this.validator.validate(schemaWithoutId, { ...params.body } as ProductData)
+
+      let result: ProductData | void = await this.service.addProduct(params.body as Record<string, unknown>)
       
       let dataResponse = {
         status: HttpStatus.Created,
@@ -54,6 +58,9 @@ class ProductController {
     try {
       let { body, path } = params
       let result: ProductData | null = null
+
+      const { id, ...schemaWithoutId } = schemaProduct
+      this.validator.validate(schemaWithoutId, { ...params.body } as ProductData)
 
       if (path && path.id) {
         let userId = path.id as string

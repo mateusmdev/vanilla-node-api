@@ -1,4 +1,4 @@
-import { Params, ProductData } from "../utils/Type"
+import { ProductData } from "../utils/Type"
 import ProductRepository from "../repository/ProductRepository"
 
 class ProductService {
@@ -18,8 +18,8 @@ class ProductService {
   }
   
   async addProduct(body:Record<string, unknown>) {
-    let bodyData = body as ProductData
-    return await this.repository.save(bodyData)
+    let { id, ...bodyData } = body
+    return await this.repository.save(bodyData as ProductData)
   }
   
   async updateProduct(id: string, body: Record<string, unknown>) {
