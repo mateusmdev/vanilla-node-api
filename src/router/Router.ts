@@ -1,3 +1,4 @@
+import NotFoundError from '../exception/NotFoundError';
 import { HTTPHandler, Params, Callback, RouteDetail } from '../utils/Type'
 
 class Router {
@@ -22,7 +23,9 @@ class Router {
       callback,
       regex,
       paramNames
-    };
+    }
+
+    this.sortRoutes();
   }
 
   private pathToRegex(method: string, path: string) {
@@ -65,7 +68,7 @@ class Router {
   async requestRouter(router: string, handlers: HTTPHandler) {
     let selectedRouter = await this.selectRoute(router)
 
-    if (!selectedRouter) return
+    if (!selectedRouter) throw new NotFoundError(`The route '${router}' was not found.`)
 
     let [, routeDetail] = selectedRouter
     let pathParams = await this.mapParams(router, routeDetail) || {}
@@ -93,9 +96,8 @@ class Router {
 
   private async selectRoute(router: string) {
     let routesList = Object.entries(this.routes)
-    let sortedRoutes = this.sortRoutes(routesList)
 
-    let selectedRouter = sortedRoutes.find(entrie => {
+    let selectedRouter = routesList.find(entrie => {
       let [, detail] = entrie
       return detail.regex.test(router)
     })
@@ -116,15 +118,17 @@ class Router {
     return params
   }
 
-  private sortRoutes(routes: [string, RouteDetail][]) {
-    return routes.sort(([routeA], [routeB]) => {
+  private sortRoutes() {
+    const sortedEntries = Object.entries(this.routes).sort(([routeA], [routeB]) => {
       const pathA = routeA.split(':')[1]!
       const pathB = routeB.split(':')[1]!
-      const segmentsA = (pathA.match(/\//g) || []).length;
-      const segmentsB = (pathB.match(/\//g) || []).length;
+      const segmentsA = (pathA.match(/\//g) || []).length
+      const segmentsB = (pathB.match(/\//g) || []).length
       
-      return segmentsB - segmentsA;
-    })
+      return segmentsB - segmentsA
+    });
+    
+    this.routes = Object.fromEntries(sortedEntries)
   }
 }
 

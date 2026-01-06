@@ -1,4 +1,4 @@
-import type {IncomingMessage, ServerResponse} from 'http'
+import type { IncomingMessage, ServerResponse } from 'http'
 
 export type HTTPHandler = { request: IncomingMessage, response: ServerResponse }
 export type Params = { 

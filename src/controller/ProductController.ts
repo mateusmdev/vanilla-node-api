@@ -30,7 +30,7 @@ class ProductController {
       }
 
       response.writeHead(httpStatus, {'Content-Type': 'application/json'})
-      response.end(JSON.stringify(dataResponse))
+      return response.end(JSON.stringify(dataResponse))
     } catch (error) {
 
       response.writeHead(HttpStatus.InternalError, {'Content-Type': 'application/json'})
@@ -54,7 +54,7 @@ class ProductController {
       }
       
       response.writeHead(HttpStatus.Created, {'Content-Type': 'application/json'})
-      response.end(JSON.stringify(dataResponse)) 
+      return response.end(JSON.stringify(dataResponse)) 
     } catch (error) {
       
       if (error instanceof ValidationError) {
@@ -95,9 +95,7 @@ class ProductController {
       }
 
       response.writeHead(httpStatus, {'Content-Type': 'application/json'})
-      response.end(JSON.stringify(dataResponse))
-
-      return result
+      return response.end(JSON.stringify(dataResponse))
     } catch (error) {
 
       if (error instanceof ValidationError) {
@@ -129,7 +127,7 @@ class ProductController {
       }
       
       response.writeHead(httpStatus, {'Content-Type': 'application/json'})
-      response.end(JSON.stringify(dataResponse))
+      return response.end(JSON.stringify(dataResponse))
     } catch (error) {
 
       response.writeHead(HttpStatus.InternalError, {'Content-Type': 'application/json'})
