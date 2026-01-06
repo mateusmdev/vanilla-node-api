@@ -99,7 +99,6 @@ class ProductController {
 
       return result
     } catch (error) {
-      // throw error
 
       if (error instanceof ValidationError) {
         response.writeHead(HttpStatus.BadRequest, {'Content-Type': 'application/json'})
@@ -132,7 +131,6 @@ class ProductController {
       response.writeHead(httpStatus, {'Content-Type': 'application/json'})
       response.end(JSON.stringify(dataResponse))
     } catch (error) {
-      // throw error
 
       response.writeHead(HttpStatus.InternalError, {'Content-Type': 'application/json'})
       return response.end(JSON.stringify({
