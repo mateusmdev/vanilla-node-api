@@ -3,6 +3,7 @@ import { Params } from "../utils/Type";
 import ProductService from "../service/ProductService";
 import { ProductData, HttpStatus } from "../utils/Type";
 import Validator, { SchemaValidation, schemaProduct } from "../utils/Validator";
+import ValidationError from "../exception/ValidationError";
 
 class ProductController {
   private service = new ProductService()
@@ -31,7 +32,12 @@ class ProductController {
       response.writeHead(httpStatus, {'Content-Type': 'application/json'})
       response.end(JSON.stringify(dataResponse))
     } catch (error) {
-      throw error
+
+      response.writeHead(HttpStatus.InternalError, {'Content-Type': 'application/json'})
+      return response.end(JSON.stringify({
+        status: HttpStatus.InternalError,
+        message: 'Internal Server Error: Your request could not be processed.'
+      })) 
     }
   }
   
@@ -50,7 +56,21 @@ class ProductController {
       response.writeHead(HttpStatus.Created, {'Content-Type': 'application/json'})
       response.end(JSON.stringify(dataResponse)) 
     } catch (error) {
-      throw error
+      
+      if (error instanceof ValidationError) {
+        response.writeHead(HttpStatus.BadRequest, {'Content-Type': 'application/json'})
+        return response.end(JSON.stringify({
+          status: HttpStatus.BadRequest,
+          message: 'Data validation failed.',
+          details: error.details
+        })) 
+      }
+      
+      response.writeHead(HttpStatus.InternalError, {'Content-Type': 'application/json'})
+      return response.end(JSON.stringify({
+        status: HttpStatus.InternalError,
+        message: 'Internal Server Error: Your request could not be processed.'
+      })) 
     }
   }
   
@@ -79,7 +99,22 @@ class ProductController {
 
       return result
     } catch (error) {
-      throw error
+      // throw error
+
+      if (error instanceof ValidationError) {
+        response.writeHead(HttpStatus.BadRequest, {'Content-Type': 'application/json'})
+        return response.end(JSON.stringify({
+          status: HttpStatus.BadRequest,
+          message: 'Data validation failed.',
+          details: error.details
+        })) 
+      }
+      
+      response.writeHead(HttpStatus.InternalError, {'Content-Type': 'application/json'})
+      return response.end(JSON.stringify({
+        status: HttpStatus.InternalError,
+        message: 'Internal Server Error: Your request could not be processed.'
+      })) 
     }
   }
   
@@ -97,7 +132,13 @@ class ProductController {
       response.writeHead(httpStatus, {'Content-Type': 'application/json'})
       response.end(JSON.stringify(dataResponse))
     } catch (error) {
-      throw error
+      // throw error
+
+      response.writeHead(HttpStatus.InternalError, {'Content-Type': 'application/json'})
+      return response.end(JSON.stringify({
+        status: HttpStatus.InternalError,
+        message: 'Internal Server Error: Your request could not be processed.'
+      })) 
     }
   }
 }

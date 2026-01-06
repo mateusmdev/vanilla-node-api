@@ -1,4 +1,5 @@
 import { ProductData } from "./Type"
+import ValidationError from "../exception/ValidationError"
 
 type FieldType = 'string' | 'number' | 'boolean'
 
@@ -18,7 +19,8 @@ export const schemaProduct: SchemaValidation<ProductData> = {
   },
   
   name: {
-    required: `The 'name' field is required to execute the operation.`
+    required: `The 'name' field is required to execute the operation.`,
+    type: 'string'
   },
   
   price: {
@@ -64,7 +66,9 @@ class Validator<T> {
       }
     })
 
-    if (this.errors.length > 0) throw Error(this.errors.join('\n'))
+    if (this.errors.length > 0) {
+      throw new ValidationError(`Missing required fields.`, this.errors)
+    }
   }
 }
 

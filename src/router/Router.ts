@@ -107,13 +107,9 @@ class Router {
     let matchParams = router.match(routeDetail.regex)
 
     if (!matchParams) return
-
-    // let params: Record<string, string | undefined> | null = {}
     let params: Record<string, unknown> = {}
 
     routeDetail.paramNames.forEach((name, index) => {
-      // params[name] = matchParams[index + 1]
-
       params[name] = matchParams[index + 1]
     })
 
