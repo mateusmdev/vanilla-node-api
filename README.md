@@ -1,6 +1,40 @@
 vanilla-node-api
 ================
 
+## Tabela de Conteúdo
+
+- [Visão Geral](#visão-geral)
+  - [Funcionalidades Implementadas](#funcionalidades-implementadas)
+- [Objetivo do Projeto](#objetivo-do-projeto)
+- [Principais Conceitos Trabalhados](#principais-conceitos-trabalhados)
+- [Arquitetura Geral](#arquitetura-geral)
+  - [Fluxo de uma Requisição](#fluxo-de-uma-requisição)
+  - [Responsabilidades por Camada](#responsabilidades-por-camada)
+- [Sistema de Roteamento Customizado](#sistema-de-roteamento-customizado)
+  - [Router](#router)
+  - [FactoryRouter](#factoryrouter-factory-pattern)
+  - [RouterContext](#routercontext-strategy-pattern)
+- [Arquitetura MVC](#arquitetura-mvc)
+  - [Controller](#controller)
+  - [Service](#service)
+  - [Repository](#repository)
+- [Padrões de Projeto Utilizados](#padrões-de-projeto-utilizados)
+- [Limitações Conhecidas](#limitações-conhecidas)
+- [Motivação Técnica](#motivação-técnica)
+- [Considerações Finais](#considerações-finais)
+- [Instalação e Execução](#instalação-e-execução)
+  - [Pré-requisitos](#pré-requisitos)
+  - [Execução Local (Modo Convencional – npm)](#execução-local-modo-convencional--npm)
+  - [Execução com Docker](#execução-com-docker)
+- [Documentação das Rotas](#documentação-das-rotas-endpoints)
+  - [Base URL](#base-url)
+  - [GET /products](#-get-products)
+  - [GET /products/:id](#-get-productsid)
+  - [POST /products/add](#-post-productsadd)
+  - [PUT /products/edit/:id](#-put-productseditid)
+  - [DELETE /products/:id](#-delete-productsid)
+- [Licença](#licença)
+
 > REST API construída **exclusivamente com módulos nativos do Node.js**, sem uso de frameworks como Express ou Fastify, com foco em **arquitetura**, **padrões de projeto** e **entendimento profundo do fluxo HTTP**.
 
 📌 Visão Geral
