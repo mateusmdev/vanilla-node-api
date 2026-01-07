@@ -1,116 +1,99 @@
 vanilla-node-api
 ================
 
-## Tabela de Conteúdo
+- [English](README.md) | [Portuguese](README.pt-br.md)
 
-- [Visão Geral](#visão-geral)
-  - [Funcionalidades Implementadas](#funcionalidades-implementadas)
-- [Objetivo do Projeto](#objetivo-do-projeto)
-- [Principais Conceitos Trabalhados](#principais-conceitos-trabalhados)
-- [Arquitetura Geral](#arquitetura-geral)
-  - [Fluxo de uma Requisição](#fluxo-de-uma-requisição)
-  - [Responsabilidades por Camada](#responsabilidades-por-camada)
-- [Sistema de Roteamento Customizado](#sistema-de-roteamento-customizado)
+## Table of Contents
+
+- [Overview](#overview)
+  - [Implemented Features](#implemented-features)
+- [Project Objective](#project-objective)
+- [Main Concepts Covered](#main-concepts-covered)
+- [General Architecture](#general-architecture)
+  - [Request Flow](#request-flow)
+  - [Layer Responsibilities](#layer-responsibilities)
+- [Custom Routing System](#custom-routing-system)
   - [Router](#router)
   - [FactoryRouter](#factoryrouter-factory-pattern)
   - [RouterContext](#routercontext-strategy-pattern)
-- [Arquitetura MVC](#arquitetura-mvc)
+- [MVC Architecture](#mvc-architecture)
   - [Controller](#controller)
   - [Service](#service)
   - [Repository](#repository)
-- [Padrões de Projeto Utilizados](#padrões-de-projeto-utilizados)
-- [Limitações Conhecidas](#limitações-conhecidas)
-- [Motivação Técnica](#motivação-técnica)
-- [Considerações Finais](#considerações-finais)
-- [Instalação e Execução](#instalação-e-execução)
-  - [Pré-requisitos](#pré-requisitos)
-  - [Execução Local (Modo Convencional – npm)](#execução-local-modo-convencional--npm)
-  - [Execução com Docker](#execução-com-docker)
-- [Documentação das Rotas](#documentação-das-rotas-endpoints)
+- [Design Patterns Used](#design-patterns-used)
+- [Known Limitations](#known-limitations)
+- [Technical Motivation](#technical-motivation)
+- [Final Considerations](#final-considerations)
+- [Installation and Execution](#installation-and-execution)
+  - [Prerequisites](#prerequisites)
+  - [Local Execution (Conventional Mode – npm)](#local-execution-conventional-mode--npm)
+  - [Execution with Docker](#execution-with-docker)
+- [Routes Documentation](#routes-documentation-endpoints)
   - [Base URL](#base-url)
   - [GET /products](#-get-products)
   - [GET /products/:id](#-get-productsid)
   - [POST /products/add](#-post-productsadd)
   - [PUT /products/edit/:id](#-put-productseditid)
   - [DELETE /products/:id](#-delete-productsid)
-- [Licença](#licença)
+- [License](#license)
 
-> REST API construída **exclusivamente com módulos nativos do Node.js**, sem uso de frameworks como Express ou Fastify, com foco em **arquitetura**, **padrões de projeto** e **entendimento profundo do fluxo HTTP**.
+> REST API built **exclusively with native Node.js modules**, without using frameworks such as Express or Fastify, focusing on **architecture**, **design patterns**, and a **deep understanding of the HTTP flow**.
 
-📌 Visão Geral
---------------
+📌 Overview
+-----------
 
-O **vanilla-node-api** é um projeto de estudo cujo objetivo é **demonstrar domínio do funcionamento interno de uma API HTTP no Node.js**, abstraindo manualmente responsabilidades que, em frameworks populares, já vêm prontas.
+**vanilla-node-api** is a study project whose goal is to **demonstrate mastery of the internal workings of an HTTP API in Node.js**, manually abstracting responsibilities that are typically provided out of the box by popular frameworks.
 
-Este projeto foi desenvolvido **intencionalmente sem qualquer framework web**, utilizando apenas o módulo nativo `http` do Node.js, com o propósito de:
+This project was developed **intentionally without any web framework**, using only Node.js’s native `http` module, with the purpose of:
 
-*   Entender o ciclo completo de uma requisição HTTP
-    
-*   Implementar manualmente um sistema de roteamento
-    
-*   Aplicar padrões clássicos de arquitetura e design
-    
-*   Demonstrar capacidade de estruturar código escalável e organizado mesmo em baixo nível
+- Understanding the full lifecycle of an HTTP request  
+- Manually implementing a routing system  
+- Applying classic architectural and design patterns  
+- Demonstrating the ability to structure scalable and organized code even at a low level  
 
-### Funcionalidades Implementadas
+### Implemented Features
 
-**Roteamento Dinâmico:** Suporte a parâmetros de URL (ex: /products/:id/) através de conversão para Regex.
+**Dynamic Routing:** Support for URL parameters (e.g., `/products/:id/`) through conversion to Regex.
 
-**Body Parser Nativo:** Manipulação de streams de dados para captura de payloads POST e PUT.
+**Native Body Parser:** Data stream handling to capture POST and PUT payloads.
 
-**Validação de Schema:** Validador genérico que garante a integridade dos dados antes de chegarem à camada de serviço.
+**Schema Validation:** Generic validator that ensures data integrity before reaching the service layer.
 
-**Persistência em Arquivo:** CRUD completo persistido em um arquivo .json com geração de UUIDs.
+**File Persistence:** Full CRUD persisted in a `.json` file with UUID generation.
 
-> ⚠️ **Este projeto não foi projetado para produção.**  
-> Ele existe como **demonstração técnica e educacional**, especialmente para fins de portfólio.
+> ⚠️ **This project was not designed for production use.**  
+> It exists as a **technical and educational demonstration**, especially for portfolio purposes.
 
-🎯 Objetivo do Projeto
-----------------------
+🎯 Project Objective
+--------------------
 
-*   Compreender o que acontece “por debaixo dos panos” em frameworks como **Express** e **Fastify**
-    
-*   Demonstrar capacidade de:
-    
-    *   Modelar arquitetura
-        
-    *   Criar abstrações consistentes
-        
-    *   Separar responsabilidades
-        
-    *   Trabalhar diretamente com HTTP, streams e eventos
-        
-*   Evidenciar maturidade técnica para **recrutadores técnicos, CTOs e lideranças de engenharia**
+- Understand what happens “under the hood” in frameworks such as **Express** and **Fastify**
+- Demonstrate the ability to:
+  - Model architecture
+  - Create consistent abstractions
+  - Separate responsibilities
+  - Work directly with HTTP, streams, and events
 
 * * *
 
-🧠 Principais Conceitos Trabalhados
------------------------------------
+🧠 Main Concepts Covered
+-----------------------
 
-*   API REST sem frameworks
-    
-*   HTTP nativo (`node:http`)
-    
-*   Roteamento manual
-    
-*   Parsing manual de:
-    
-    *   URL
-        
-    *   Query params
-        
-    *   Path params
-        
-    *   Body
-        
-*   Arquitetura em camadas (MVC)
-    
-*   Padrões de projeto clássicos
+- REST API without frameworks  
+- Native HTTP (`node:http`)  
+- Manual routing  
+- Manual parsing of:
+  - URL
+  - Query params
+  - Path params
+  - Body
+- Layered architecture (MVC)
+- Classic design patterns
 
-🏗️ Arquitetura Geral
----------------------
+🏗️ General Architecture
+-----------------------
 
-### Fluxo de uma Requisição
+### Request Flow
 
 ```
 HTTP Request
@@ -134,358 +117,292 @@ Repository
 HTTP Response
 ```
 
-### Descrição do Fluxo
+### Flow Description
 
-1.  O servidor HTTP nativo (`http.createServer`) recebe a requisição.
-    
-2.  A requisição é delegada para uma camada central (`ServerApi`).
-    
-3.  O **FactoryRouter** identifica qual router deve tratar a rota com base no prefixo.
-    
-4.  O **RouterContext** executa o router selecionado (Strategy Pattern).
-    
-5.  O **Router**:
-    
-    *   Seleciona a rota correta
-        
-    *   Extrai parâmetros de path e query
-        
-    *   Faz o parsing do body
-        
-6.  O **Controller** executa a ação correspondente.
-    
-7.  A resposta é construída e enviada manualmente via `response`.
+1. The native HTTP server (`http.createServer`) receives the request.
+2. The request is delegated to a central layer (`ServerApi`).
+3. **FactoryRouter** identifies which router should handle the route based on the prefix.
+4. **RouterContext** executes the selected router (Strategy Pattern).
+5. The **Router**:
+   - Selects the correct route
+   - Extracts path and query parameters
+   - Parses the request body
+6. The **Controller** executes the corresponding action.
+7. The response is built and sent manually via `response`.
 
 ```
 src/
  ├─ index.ts
  ├─ server.ts
- ├─ router/                 # Core do roteamento
+ ├─ router/                 # Routing core
  │   ├─ Router.ts
  │   ├─ RouterContext.ts
  │   ├─ FactoryRouter.ts
  │   └─ ProductRouter.ts
- ├─ controller/             # Atua como intermediário que recebe a requisição HTTP
- ├─ service/                # Regras de negócio
- ├─ repository/             # Acesso a dados
- ├─ utils/                  # Tipagens e Validadores
- ├─ exception/              # Erros customizados
- └─ db/                     # Arquivo JSON (persistência)
+ ├─ controller/             # Acts as an intermediary receiving the HTTP request
+ ├─ service/                # Business rules
+ ├─ repository/             # Data access
+ ├─ utils/                  # Types and Validators
+ ├─ exception/              # Custom errors
+ └─ db/                     # JSON file (persistence)
 ```
 
-### Responsabilidades por Camada
+### Layer Responsibilities
 
 #### `index.ts`
 
-*   Inicializa o servidor HTTP nativo
-    
-*   Define a porta
-    
-*   Registra o handler principal da API
-    
+- Initializes the native HTTP server
+- Defines the port
+- Registers the main API handler
 
 #### `server.ts`
 
-*   Atua como **entry point lógico** da aplicação
-    
-*   Centraliza o recebimento da requisição
-    
-*   Encaminha para o sistema de roteamento
+- Acts as the **logical entry point** of the application
+- Centralizes request handling
+- Forwards requests to the routing system
 
-🛣️ Sistema de Roteamento Customizado
--------------------------------------
+🛣️ Custom Routing System
+------------------------
 
 ### Router
 
-A classe `Router` é responsável por:
+The `Router` class is responsible for:
 
-*   Registrar rotas HTTP (`GET`, `POST`, `PUT`, `DELETE`)
-    
-*   Normalizar URLs
-    
-*   Associar callbacks às rotas
-    
-*   Resolver dinamicamente:
-    
-    *   Path params
-        
-    *   Query params
-        
-    *   Body da requisição
-        
+- Registering HTTP routes (`GET`, `POST`, `PUT`, `DELETE`)
+- Normalizing URLs
+- Associating callbacks with routes
+- Dynamically resolving:
+  - Path params
+  - Query params
+  - Request body
 
-Cada rota armazena:
+Each route stores:
 
-*   Callback
-    
-*   Expressão de matching
-    
-*   Lista de parâmetros dinâmicos
-    
+- Callback
+- Matching expression
+- List of dynamic parameters
 
-> O roteamento é feito sem dependência externa e sem middleware.
+> Routing is performed without external dependencies and without middleware.
 
 * * *
 
 ### FactoryRouter (Factory Pattern)
 
-Responsável por:
+Responsible for:
 
-*   Manter múltiplos routers registrados
-    
-*   Selecionar dinamicamente o router correto com base no prefixo da rota
-    
+- Managing multiple registered routers
+- Dynamically selecting the correct router based on the route prefix
 
-Isso permite uma arquitetura modular, por exemplo:
+This enables a modular architecture, for example:
 
-*   `/products/*`
-    
-*   `/users/*`
-    
-*   `/orders/*`
-    
+- `/products/*`
+- `/users/*`
+- `/orders/*`
 
-Cada domínio pode ter seu próprio router isolado.
+Each domain can have its own isolated router.
 
 * * *
 
 ### RouterContext (Strategy Pattern)
 
-O `RouterContext` implementa o **Strategy Pattern**, permitindo:
+`RouterContext` implements the **Strategy Pattern**, allowing:
 
-*   Trocar dinamicamente a estratégia de roteamento
-    
-*   Desacoplar a execução da lógica de roteamento da sua implementação concreta
-    
+- Dynamic switching of routing strategies
+- Decoupling routing execution logic from its concrete implementation
 
 * * *
 
-🧱 Arquitetura MVC
-------------------
+🧱 MVC Architecture
+-------------------
 
-O projeto segue uma separação clara de responsabilidades inspirada no padrão **MVC**, adaptado ao contexto de uma API REST.
+The project follows a clear separation of responsibilities inspired by the **MVC** pattern, adapted to a REST API context.
 
 ### Controller
 
-*   Responsável por:
-    
-    *   Receber dados já processados
-        
-    *   Orquestrar chamadas de serviço
-        
-    *   Retornar respostas HTTP
-        
+- Responsible for:
+  - Receiving already processed data
+  - Orchestrating service calls
+  - Returning HTTP responses
 
 ### Service
 
-*   Contém regras de negócio
-    
-*   Não conhece HTTP
-    
-*   Atua como camada intermediária entre Controller e Repository
-    
+- Contains business rules
+- Has no knowledge of HTTP
+- Acts as an intermediary layer between Controller and Repository
 
 ### Repository
 
-*   Responsável pelo acesso a dados
-    
-*   No contexto do projeto:
-    
-    *   Persistência simples
-        
-    *   Foco em abstração, não em banco real
-        
+- Responsible for data access
+- In this project’s context:
+  - Simple persistence
+  - Focus on abstraction, not on a real database
 
 * * *
 
-🧩 Padrões de Projeto Utilizados
---------------------------------
+🧩 Design Patterns Used
+----------------------
 
 ### ✔ Factory Pattern
 
-*   Usado para seleção dinâmica de routers
-    
-*   Facilita escalabilidade da API
-    
+- Used for dynamic router selection
+- Facilitates API scalability
 
 ### ✔ Strategy Pattern
 
-*   Permite alternar estratégias de roteamento
-    
-*   Reduz acoplamento
-    
+- Allows switching routing strategies
+- Reduces coupling
 
-### ✔ MVC (adaptado)
+### ✔ MVC (adapted)
 
-*   Separação clara de responsabilidades
-    
-*   Código mais legível, testável e manutenível
-    
+- Clear separation of responsibilities
+- More readable, testable, and maintainable code
 
 * * *
 
-⚠️ Limitações Conhecidas
-------------------------
-
-Este projeto **não tem como objetivo uso em produção**. Algumas limitações intencionais:
-
-*   Sem middlewares
-    
-*   Sem autenticação
-    
-*   Sem controle de concorrência
-    
-*   Sem validação robusta de dados
-    
-*   Persistência simples
-    
-*   Sem tratamento avançado de erros
-    
-*   Sem otimizações de performance
-    
-
-Essas decisões foram conscientes para **manter o foco no entendimento do funcionamento interno** de uma API HTTP.
-
-* * *
-
-🧪 Motivação Técnica
+⚠️ Known Limitations
 --------------------
 
-Frameworks modernos abstraem grande parte da complexidade do HTTP.  
-Este projeto demonstra que o autor:
+This project **is not intended for production use**. Some intentional limitations include:
 
-*   Entende essas abstrações
-    
-*   Sabe reproduzi-las manualmente
-    
-*   Consegue estruturar código limpo mesmo sem ferramentas prontas
-    
-*   Tem domínio conceitual além do uso de frameworks
-    
+- No middleware
+- No authentication
+- No concurrency control
+- No robust data validation
+- Simple persistence
+- No advanced error handling
+- No performance optimizations
+
+These decisions were made consciously to **keep the focus on understanding the internal workings** of an HTTP API.
 
 * * *
 
-📌 Considerações Finais
+🧪 Technical Motivation
 -----------------------
 
-Este projeto não tenta competir com frameworks existentes.
-Este repositório existe como:
+Modern frameworks abstract away much of HTTP’s complexity.  
+This project demonstrates that the author:
 
-*   Demonstração de conhecimento técnico
-    
-*   Estudo aprofundado de Node.js
-    
-*   Material de portfólio
-    
-*   Prova de compreensão arquitetural
-
-
-⚙️ Instalação e Execução
-------------------------
-
-Esta seção descreve como **instalar, executar e testar** a API localmente.  
-O projeto oferece **duas formas de execução**, refletindo cenários comuns de desenvolvimento moderno.
+- Understands these abstractions
+- Can reproduce them manually
+- Can structure clean code even without ready-made tools
+- Has conceptual mastery beyond merely using frameworks
 
 * * *
 
-### ✔️ Pré-requisitos
+📌 Final Considerations
+----------------------
 
-Independente do método escolhido, é esperado que o ambiente possua:
+This project does not attempt to compete with existing frameworks.  
+This repository exists as:
 
-*   **Node.js** (versão recente recomendada)
-    
-*   **npm**
-    
-*   (Opcional) **Docker** e **Docker Compose**
-    
+- A demonstration of technical knowledge
+- An in-depth Node.js study
+- Portfolio material
+- Proof of architectural understanding
+
+⚙️ Installation and Execution
+-----------------------------
+
+This section describes how to **install, run, and test** the API locally.  
+The project offers **two execution methods**, reflecting common modern development scenarios.
 
 * * *
 
-▶️ Execução Local (Modo Convencional – npm)
--------------------------------------------
+### ✔️ Prerequisites
 
-### 1\. Clonar o repositório
+Regardless of the chosen method, the environment is expected to have:
+
+- **Node.js** (recent version recommended)
+- **npm**
+- (Optional) **Docker** and **Docker Compose**
+
+* * *
+
+▶️ Local Execution (Conventional Mode – npm)
+--------------------------------------------
+
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/seu-usuario/vanilla-node-api.git
 cd vanilla-node-api
 ```
 
-### 2\. Instalar dependências
+### 2\. Install dependencies
 
-As dependências do projeto são **mínimas e voltadas apenas ao desenvolvimento**:
+Project dependencies are **minimal and focused only on development**:
 
 ```bash
 npm install
 ```
 
-**DevDependencies utilizadas:**
+**DevDependencies used:**
 
-*   `typescript` – tipagem estática e organização do código
+*   `typescript` – static typing and code organization
     
-*   `@types/node` – definições de tipos do Node.js
+*   `@types/node` – Node.js type definitions
     
-*   `nodemon` – reload automático durante desenvolvimento
+*   `nodemon` – automatic reload during development
     
 
-> Nenhuma dependência externa é usada para HTTP, roteamento ou middleware.
+> No external dependencies are used for HTTP, routing, or middleware.
 
-### 3\. Executar o projeto
+### 3\. Run the project
 
-#### Modo desenvolvimento (com reload automático):
+#### Development mode (with auto-reload):
 
 ```bash
 npm run dev
 ```
 
-Modo compilado:
+Compiled mode:
 
 ```bash
 npm run build
 npm start
 ```
 
-Por padrão, o servidor será iniciado em:
+By default, the server will start at:
 
 ```bash
 http://localhost:3000
 ```
 
-🐳 Execução com Docker
+🐳 Execution with Docker
 ----------------------
 
-O projeto também pode ser executado via **Docker**, garantindo isolamento de ambiente e facilidade de teste.
+The project can also be run using **Docker**, ensuring environment isolation and ease of testing.
 
-### Build da imagem
+### Build the image
 
 ```bash
 docker build -t vanilla-node-api .
 ```
 
-Execução do container
+Run the container
 
 ```bash
 docker run -p 3000:3000 vanilla-node-api
 ```
 
-Após isso, a API estará disponível em:
+After that, the API will be available at:
 
 ```bash
 http://localhost:3000
 ```
 
-🛣️ Documentação das Rotas (Endpoints)
+🛣️ Routes Documentation (Endpoints)
 --------------------------------------
 
 A API expõe um conjunto simples de endpoints focados em **produtos**.
 
 | Método| Rota |Descrição|
 |------|-------|---------|
-| GET  |`/products`| Retorna dados em formato JSON de todos os produtos cadastrados |
-| GET  |`/products/:id`| Retorna um produto especifico em formato JSON utilizando o parametro "id" na requisicao |
-| POST |`/products/add` | Enviar dados através do corpo da requisição e salva no banco de dados como um novo produto |
-| PUT |`/products/edit/:id` |  Altera dados de um produto já existente no banco de dados |
-| DELETE |`/products/:id` | Delete um produto com base no seu ID |
+| GET  |`/products`| Returns all registered products in JSON format |
+| GET  |`/products/:id`| Returns a specific product in JSON format using the "id" parameter |
+| POST |`/products/add` | Sends data through the request body and saves a new product |
+| PUT |`/products/edit/:id` |  Updates an existing product|
+| DELETE |`/products/:id` | Deletes a product based on its ID |
 
 📦 Base URL
 
@@ -495,38 +412,38 @@ http://localhost:3000
 
 ### 🔹 GET `/products/`
 
-**Descrição:**  
-Retorna todos os produtos cadastrados.
+**Description:**  
+Returns all registered products.
 
-**Resposta:**
+**Response:**
 
 *   `200 OK`
     
-*   Array de produtos
+*   Array of products
 
 ### 🔹 GET `/products/:id/`
 
-**Descrição:**  
-Retorna um produto específico pelo `id`.
+**Description:**  
+Returns a specific product by `id`.
 
-**Parâmetros de path:**
+**Path parameters:**
 
-| Nome | Tipo | Obrigatório |
+| Name | Type | Required |
 | --- | --- | --- |
-| id | string | sim |
+| id | string | yes |
 
-**Resposta:**
+**Response:**
 
-*   `200 OK` se encontrado
+*   `200 OK` if found
     
-*   `404 Not Found` se não existir
+*   `404 Not Found` if it does not exist
 
 ### 🔹 POST `/products/add/`
 
-**Descrição:**  
-Cria um novo produto.
+**Description:**  
+Creates a new product.
 
-**Body esperado (JSON):**
+**Expected body (JSON):**
 
 ```json
 {
@@ -536,22 +453,22 @@ Cria um novo produto.
 }
 ```
 
-**Resposta:**
+**Response:**
 
 *   `201 Created`
     
-*   Objeto do produto criado (com `id` gerado automaticamente)
+*   Created product object (with automatically generated `id`)
 
 ### 🔹 PUT `/products/edit/:id/`
 
-**Descrição:**  
-Atualiza parcialmente ou totalmente um produto existente.
+**Description:**  
+Partially or fully updates an existing product.
 
-**Parâmetros de path:**
+**Path parameters:**
 
-| Nome | Tipo | Obrigatório |
+| Name | Type | Required |
 | --- | --- | --- |
-| id | string | sim |
+| id | string | yes |
 
 ```json
 {
@@ -561,76 +478,76 @@ Atualiza parcialmente ou totalmente um produto existente.
 }
 ```
 
-**Resposta:**
+**Response:**
 
-*   `200 OK` se atualizado
+*   `200 OK` if updated
     
-*   `404 Not Found` se o produto não existir
+*   `404 Not Found` if the product does not exist
 
 ### 🔹 DELETE `/products/:id/`
 
-**Descrição:**  
-Remove um produto pelo `id`.
+**Description:**  
+Removes a product by `id`.
 
-**Parâmetros de path:**
+**Path parameters:**
 
-| Nome | Tipo | Obrigatório |
+| Name | Type | Required |
 | --- | --- | --- |
-| id | string | sim |
+| id | string | yes |
 
 **Resposta:**
 
-*   `200 OK` se removido
+*   `200 OK` if removed
     
-*   `404 Not Found` se não existir
+*   `404 Not Found` if it does not exist
 
-🚧 Limitações Conhecidas (Seção Importante)
+🚧 Known Limitations (Important Section)
 -------------------------------------------
 
-Este projeto possui **limitações intencionais**, alinhadas ao seu objetivo e escopo limitado à criar uma API REST utilizando apenas o módulo HTTP.
+This project has **intentional limitations**, aligned with its objective and limited scope of creating a REST API using only the HTTP module.
 
-### Limitações técnicas:
+### Technical limitations:
 
-*   Não utiliza:
+*   Does not use:
     
     *   Middlewares
         
-    *   Autenticação
+    *   Authentication
         
-    *   Autorização
+    *   Authorization
         
-*   Parsing manual de body (sem streams avançados)
+*   Manual body parsing (no advanced streams)
     
-*   Persistência simplificada (arquivo JSON)
+*   Simplified persistence (JSON file)
     
-*   Sem:
+*   No:
     
-    *   Pool de conexões
+    *   Connection pooling
         
     *   Cache
         
-    *   Controle de concorrência
+    *   Concurrency control
         
-*   Tratamento de erros básico
+*   Basic error handling
     
-*   Sem validação estruturada de payload
+*   No structured payload validation
     
-*   Sem testes automatizados
+*   No automated tests
 
-📄 Licença
+📄 License
 ----------
 
-Este projeto está licenciado sob a licença **MIT**.
+This project is licensed under the **MIT** license.
 
-Isso significa que você é livre para:
+This means you are free to:
 
-*   Usar
+*   Use
     
-*   Estudar
+*   Study
     
-*   Modificar
+*   Modify
     
-*   Distribuir
+*   Distribute
     
 
-Desde que mantenha o aviso de copyright.
+As long as you keep the copyright notice.
