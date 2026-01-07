@@ -29,7 +29,7 @@ Este projeto foi desenvolvido **intencionalmente sem qualquer framework web**, u
 **Persistência em Arquivo:** CRUD completo persistido em um arquivo .json com geração de UUIDs.
 
 > ⚠️ **Este projeto não foi projetado para produção.**  
-> Ele existe como **demonstração técnica e educacional**, especialmente para fins de portfólio.”
+> Ele existe como **demonstração técnica e educacional**, especialmente para fins de portfólio.
 
 🎯 Objetivo do Projeto
 ----------------------
@@ -156,7 +156,7 @@ src/
     
 *   Centraliza o recebimento da requisição
     
-*   Encaminha para o sistema de roteamento”
+*   Encaminha para o sistema de roteamento
 
 🛣️ Sistema de Roteamento Customizado
 -------------------------------------
@@ -379,7 +379,7 @@ cd vanilla-node-api
 
 ### 2\. Instalar dependências
 
-As dependências do projeto são **mínimas e voltadas apenas ao desenvolvimento**:”
+As dependências do projeto são **mínimas e voltadas apenas ao desenvolvimento**:
 
 ```bash
 npm install
@@ -481,11 +481,11 @@ Retorna um produto específico pelo `id`.
 | --- | --- | --- |
 | id | string | sim |
 
-“**Resposta:**
+**Resposta:**
 
 *   `200 OK` se encontrado
     
-*   `404 Not Found` se não existir”
+*   `404 Not Found` se não existir
 
 ### 🔹 POST `/products/add/`
 
