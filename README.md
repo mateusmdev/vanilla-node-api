@@ -1,7 +1,7 @@
 vanilla-node-api
 ================
 
-> REST API construída **exclusivamente com módulos nativos do Node.js**, sem uso de frameworks como Express ou Fastify, com foco em **arquitetura**, **padrões de projeto** e **entendimento profundo do fluxo HTTP**.”
+> REST API construída **exclusivamente com módulos nativos do Node.js**, sem uso de frameworks como Express ou Fastify, com foco em **arquitetura**, **padrões de projeto** e **entendimento profundo do fluxo HTTP**.
 
 📌 Visão Geral
 --------------
